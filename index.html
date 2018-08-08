@@ -1,0 +1,105 @@
+
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <title>making ripple effect button</title>
+
+<style>
+
+main { width: 100%; max-width: 800px; margin: auto; padding: 5px; background: #010; }
+
+h1 { color: #fbf; text-align: center; }
+
+#rippleBtnWrap { padding: 10px; background: #fbf; }
+
+#rippleBtn { 
+   display: block; 
+   margin: auto; 
+   font-size: 24px; 
+   padding: 0.1em 0.5em;
+   border: 0;
+   outline: 0;
+   color: #000;
+   background-color: #0b0;
+   border-radius: 0.15em;
+   box-shadow: 0 0 8px rgba(0,0,0,0.3);
+   position: relative; 
+   z-index: 10;
+   top: 0; left: 0;
+   overflow: hidden;
+}
+
+   #rippleBtnEffectCircle {
+      width: 100px; height: 100px;
+      border-radius: 50%; /* make circle */
+      background: rgba(255,255,255,0.7);
+      position: absolute;
+      z-index: 10;
+      bottom: -100%; right: 0;
+      transform: scale(0);
+   }
+
+   .scaleUp {
+	 animation: scaleUpAnim 0.4s linear;
+
+   }
+
+   @keyframes scaleUpAnim {
+      to {
+	 transform: scale(2.5);
+	 opacity: 0;
+      }
+   }
+</style>
+
+   </head>
+   <body>
+
+      <main>
+
+      <h1> making ripple button effect </h1>
+      <div id="rippleBtnWrap">
+	 <button id="rippleBtn">
+	    <p>ripple button</p>
+	    <div id="rippleBtnEffectCircle"></div>
+	 </button>
+      </div>
+
+      </main>
+
+
+      <script type="text/javascript">
+
+var $rippleBtn = document.getElementById("rippleBtn");
+var rippleBtnDims = $rippleBtn.getBoundingClientRect();
+console.dir(rippleBtnDims);
+
+var $rippleBtnEffectCircle = document.getElementById("rippleBtnEffectCircle");
+//we want it to fill circle, and width is definitely large than height otherwise we have an ugly button 
+$rippleBtnEffectCircle.style.width = $rippleBtnEffectCircle.style.height = rippleBtnDims.width + "px";
+
+
+
+document.body.addEventListener("click", bodyClickH, false);
+function bodyClickH(e){
+   if(!e) var e = window.event;
+   if(e.target.id === "rippleBtn"){
+      console.log("rippleBtn click e");
+      //console.log(e.offsetX);
+      $rippleBtnEffectCircle.style.left = e.offsetX - 100 + "px"; 
+      $rippleBtnEffectCircle.style.top = e.offsetY - 100 + "px"; 
+      //-100px since it is 100px wide in css
+      $rippleBtnEffectCircle.classList.add("scaleUp");
+      setTimeout(function(){
+	 $rippleBtnEffectCircle.classList.remove("scaleUp");
+      }, 600); //the animation is 0.4s or 400ms
+   }
+
+}
+
+      </script>
+   </body>
+</html>
